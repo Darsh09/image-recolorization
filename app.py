@@ -399,7 +399,13 @@ def colorize():
     os.remove('imageToSave.png')
 
     # return jsonify({ "Result": 'Trial' })
-    return send_file('./result.png', mimetype='image/png')
+    return_data = io.BytesIO()
+    with open("result.png", "rb") as fo:
+        return_data.write(fo.read())
+    return_data.seek(0)
+    os.remove('./result.png')
+    r = send_file(return_data, mimetype='image/png')
+    return r
 
 
 @app.route('/api/colorizetest')
